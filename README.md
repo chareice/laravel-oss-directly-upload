@@ -9,7 +9,7 @@ composer require chareice/laravel-oss-directly-upload
 
 ## 配置
 ```bash
-$ php artisan vendor:publish --provider="Chareice\\OssDirectlyUpload\\OssDirectlyUploadServiceProvider" --tag=config
+php artisan vendor:publish --provider="Chareice\\OssDirectlyUpload\\OssDirectlyUploadServiceProvider" --tag=config
 ```
 
 ## 使用
