@@ -17,8 +17,15 @@ class OssClient
 
     public function sign(string $dir): SignData
     {
+        $expiration = Carbon::now()->addMinutes($this->ttl)->toIso8601String();
+
+
+        /**
+         * Policy 规则
+         * https://help.aliyun.com/document_detail/31988.html?spm=a2c4g.11186623.0.0.51e0774fwazjir#title-5go-s2f-dnw
+         */
         $policy = base64_encode(json_encode([
-            'expiration' => Carbon::now()->addMinutes($this->ttl)->toIso8601ZuluString(),
+            'expiration' => $expiration,
             'condition' => [
                 ['content-length-range', 0, $this->maxFileSize],
                 ['starts-with', '$key', $dir]
@@ -30,7 +37,7 @@ class OssClient
             host: $this->host,
             policy: $policy,
             signature: base64_encode(hash_hmac('sha1', $policy, $this->accessKey, true)),
-            expire: "123",
+            expire: $expiration,
             dir: $dir,
         );
     }

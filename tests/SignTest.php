@@ -2,7 +2,6 @@
 namespace Tests;
 
 use Chareice\OssDirectlyUpload\OssClient;
-use PHPUnit\Framework\TestCase;
 
 class SignTest extends TestCase
 {
@@ -17,5 +16,12 @@ class SignTest extends TestCase
         $signData = $ossClient->sign("user1/test");
 
         $this->assertEquals($accessId, $signData->accessID);
+    }
+
+
+    public function test_ioc()
+    {
+        $service = app(OssClient::class);
+        $this->assertInstanceOf(OssClient::class, $service);
     }
 }
