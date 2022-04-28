@@ -17,7 +17,7 @@ class OssClient
 
     public function sign(string $dir): SignData
     {
-        $expiration = Carbon::now()->addMinutes($this->ttl)->toIso8601String();
+        $expiration = Carbon::now()->addMinutes($this->ttl)->toIso8601ZuluString('millisecond');
 
 
         /**
