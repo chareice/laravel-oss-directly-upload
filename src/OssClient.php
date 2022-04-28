@@ -26,7 +26,7 @@ class OssClient
          */
         $policy = base64_encode(json_encode([
             'expiration' => $expiration,
-            'condition' => [
+            'conditions' => [
                 ['content-length-range', 0, $this->maxFileSize],
                 ['starts-with', '$key', $dir]
             ]
