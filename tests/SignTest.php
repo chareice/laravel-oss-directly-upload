@@ -13,7 +13,9 @@ class SignTest extends TestCase
         $bucket = 'test_bucket';
 
         $ossClient = new OssClient(accessID: $accessId, accessKey: $accessKey,host: $host,bucket: $bucket);
-        $signData = $ossClient->sign("user1/test");
+        $signData = $ossClient->sign([
+            'dir' => 'user1/test',
+        ]);
 
         $this->assertEquals($accessId, $signData->accessID);
     }

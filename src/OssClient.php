@@ -15,7 +15,12 @@ class OssClient
 
     }
 
-    public function sign(string $dir): SignData
+
+    /**
+     * @param array{dir: string, maxFileSize?: integer} $options
+     * @return SignData
+     */
+    public function sign(array $options): SignData
     {
         $expiration = Carbon::now()->addMinutes($this->ttl)->toIso8601ZuluString('millisecond');
 
@@ -27,8 +32,8 @@ class OssClient
         $policy = base64_encode(json_encode([
             'expiration' => $expiration,
             'conditions' => [
-                ['content-length-range', 0, $this->maxFileSize],
-                ['starts-with', '$key', $dir]
+                ['content-length-range', 0, $options['maxFileSize'] ?? $this->maxFileSize],
+                ['starts-with', '$key', $options['dir']]
             ]
         ]));
 
@@ -38,7 +43,7 @@ class OssClient
             policy: $policy,
             signature: base64_encode(hash_hmac('sha1', $policy, $this->accessKey, true)),
             expire: $expiration,
-            dir: $dir,
+            dir: $options['dir'],
         );
     }
 }
